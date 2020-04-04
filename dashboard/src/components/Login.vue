@@ -6,7 +6,7 @@
         v-model="region"
         :items="getAreas.regions.map(i => i.name)"
         :rules="[v => !!v || 'Item is required']"
-        label="Περφέρεια"
+        label="Περιφέρεια"
         prepend-icon="mdi-home"
         required
       ></v-select>
