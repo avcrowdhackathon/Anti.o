@@ -2,7 +2,8 @@
 <template>
   <v-app app>
     <navbar />
-    <v-content id="wrapper">
+    <v-content class="wrapper">
+      
       <div id="menu">
         <login v-if="!isAuthenticated" class="login-form" />
         <feed v-else />
@@ -31,7 +32,7 @@
         fab
         top
         right
-        color="pink"
+        color="#21C1CE"
       >
         <v-icon>mdi-chevron-up</v-icon>
       </v-btn>
@@ -90,15 +91,11 @@ export default {
 
 <style scoped>
 .wrapper {
-  width: 100%;
-  height: 100%;
-  border: 2px solid #000;
-  overflow: hidden;
+  margin-top: 48px;
 }
 
 .wrapper div {
   min-height: 200px;
-  padding: 10px;
 }
 .login-form {
   position: relative;
@@ -109,14 +106,14 @@ export default {
   float: left;
   width: 300px;
   border-right: 2px solid #000;
-  height: 100%;
+    height: 100%;
 }
 #map {
   height: 100%;
   overflow: hidden;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 600px) {
   #menu {
     float: none;
     margin-right: 0;
