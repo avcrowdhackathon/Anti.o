@@ -1,6 +1,7 @@
 
 <template>
   <v-app app>
+    <navbar />
     <v-content id="wrapper">
       <div id="menu">
         <login v-if="!isAuthenticated" class="login-form" />
@@ -22,16 +23,20 @@
       </div>
     </v-content>
     <v-footer app>
-      <v-btn 
+      <v-btn
         v-if="scrolledToBottom"
         @click.stop="backToTop"
-        absolute dark fab top right 
+        absolute
+        dark
+        fab
+        top
+        right
         color="pink"
       >
         <v-icon>mdi-chevron-up</v-icon>
       </v-btn>
 
-      <span>&copy; 2020</span>
+      <span>Anti.o &copy; 2020</span>
     </v-footer>
   </v-app>
 </template>
@@ -39,11 +44,14 @@
 import { mapGetters } from "vuex";
 import Login from "./components/Login.vue";
 import Feed from "./components/Feed.vue";
+import Navbar from "./components/Navbar.vue";
+
 
 export default {
   components: {
     Login,
     Feed,
+    Navbar
   },
   props: {
     source: String
@@ -52,7 +60,7 @@ export default {
     scrolledToBottom: false
   }),
   methods: {
-    scroll () {
+    scroll() {
       window.onscroll = () => {
         const menu = document.getElementById("menu");
         if (document.documentElement.scrollTop > 0.8 * menu.offsetHeight) {
@@ -60,18 +68,18 @@ export default {
         } else {
           this.scrolledToBottom = false;
         }
-      }
+      };
     },
     backToTop() {
       window.scroll({
-        top: 0, 
-        left: 0, 
-        behavior: 'smooth'
+        top: 0,
+        left: 0,
+        behavior: "smooth"
       });
     }
   },
   mounted() {
-    this.scroll()
+    this.scroll();
   },
   computed: {
     ...mapGetters(["isAuthenticated"])
