@@ -15,7 +15,7 @@
         :items="getAreas.municipalities.filter(m => m.regionId === selectedRegionId).map(m => m.name)"
         :rules="[v => !!v || 'Item is required']"
         :disabled="region ? false : true"
-        label="Δήμος"
+        label="Νομός"
         prepend-icon="mdi-home"
         required
       ></v-select>
@@ -24,7 +24,7 @@
         :items="getAreas.counties.filter(c => c.municipalityId === selectedMunicipalityId && c.regionId === selectedRegionId).map(c => c.name)"
         :rules="[v => !!v || 'Item is required']"
         :disabled="municipality ? false : true"
-        label="Νομός"
+        label="Δήμος"
         prepend-icon="mdi-home"
         required
       ></v-select>
