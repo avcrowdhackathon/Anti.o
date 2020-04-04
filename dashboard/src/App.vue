@@ -28,7 +28,7 @@
         absolute dark fab top right 
         color="pink"
       >
-        <v-icon>mdi-plus</v-icon>
+        <v-icon>mdi-chevron-up</v-icon>
       </v-btn>
 
       <span>&copy; 2020</span>
