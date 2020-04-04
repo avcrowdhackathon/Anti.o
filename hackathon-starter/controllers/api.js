@@ -6,6 +6,7 @@ const tumblr = require('tumblr.js');
 const { Octokit } = require('@octokit/rest');
 const Twit = require('twit');
 const stripe = require('stripe')(process.env.STRIPE_SKEY);
+const NewsAPI = require('newsapi')('6a1843a983f940459830acc56672cd87');
 const twilio = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 const clockwork = require('clockwork')({ key: process.env.CLOCKWORK_KEY });
 const paypal = require('paypal-rest-sdk');
@@ -383,6 +384,16 @@ exports.getSteam = async (req, res, next) => {
   }
 };
 
+/**
+ * GET /api/medianews
+ * medianews API example.
+ */
+exports.getNews = (req, res) => {
+  res.render('api/medianews', {
+    title: 'mediaNews API',
+    publishableKey: '6a1843a983f940459830acc56672cd87'
+  });
+};
 /**
  * GET /api/stripe
  * Stripe API example.
