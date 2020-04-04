@@ -60,9 +60,9 @@ export default {
     handleLogin() {
       this.register({
         email: this.email,
-        area: this.area
+        area: this.county
       });
-      this.fetchArticles(this.area);
+      this.fetchArticles([this.region, this.municipality, this.county]);
     }
   },
   computed: {
