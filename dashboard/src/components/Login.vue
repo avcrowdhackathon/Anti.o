@@ -37,7 +37,7 @@
     </v-form>
     <v-divider></v-divider>
     <v-card-actions>
-      <v-btn color="info" @click.stop="handleLogin">Agree</v-btn>
+      <v-btn color="cyan" dark @click.stop="handleLogin">Agree</v-btn>
     </v-card-actions>
   </v-card>
 </template>

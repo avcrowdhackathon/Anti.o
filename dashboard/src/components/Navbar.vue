@@ -4,7 +4,9 @@
     color="#21C1CE"
     dark
     short
-  ></v-app-bar>
+  >
+    <v-img height="55" contain src="../assets/logo.png"></v-img>
+  </v-app-bar>
 </template>
 
 <script>

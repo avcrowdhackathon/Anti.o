@@ -91,7 +91,7 @@ export default {
 
 <style scoped>
 .wrapper {
-  margin-top: 48px;
+  margin-top: 55px;
 }
 
 .wrapper div {
