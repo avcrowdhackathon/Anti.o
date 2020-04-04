@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import httpGetArticles from '../http-helpers/articles.js'
+import httpGetArticles from '../helpers/articles-http';
+import getAreas from '../helpers/areas';
 
 Vue.use(Vuex);
 
@@ -10,7 +11,7 @@ export default new Vuex.Store({
     authenticated: false,
     currentUser: {},
     users: ["test@test.com"],
-    areas: ["Χαλανδρι", "Μαρούσι", "Αθήνα", "Κοζάνη"],
+    areas: {},
     articles: [],
     userArea: null,
   },
@@ -37,6 +38,10 @@ export default new Vuex.Store({
       const articles = await (await httpGetArticles(area)).data.articles;
       commit('fetchArticles', articles)
     },
+    fetchAreas: async ({ commit }) => {
+      const areas = getAreas();
+      commit('fetchAreas', areas);
+    },
   },
   mutations: {
     register: (state, { user, area }) => {
@@ -44,9 +49,8 @@ export default new Vuex.Store({
       state.currentUser = user;
       state.userArea = area;
     },
-    fetchArticles: (state, articles) => {
-      state.articles = articles
-    }
+    fetchArticles: (state, articles) => state.articles = articles,
+    fetchAreas: (state, areas) => state.areas = areas,
   },
   modules: {},
 });
