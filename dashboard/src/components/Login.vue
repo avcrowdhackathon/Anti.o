@@ -62,7 +62,7 @@ export default {
         email: this.email,
         area: this.county
       });
-      this.fetchArticles([this.region, this.municipality, this.county]);
+      this.fetchArticles([this.region, this.municipality, this.county].filter(i => i!== ''));
     }
   },
   computed: {
