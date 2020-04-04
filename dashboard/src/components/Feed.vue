@@ -18,32 +18,20 @@
 <script>
 import ArticleTile from "./Article.vue";
 import { mapActions, mapGetters } from "vuex";
+import viewPortMixin from '../mixins/viewport'
 
 export default {
   name: "Feed",
   components: {
     ArticleTile
   },
+  mixins: [viewPortMixin],
   data: () => ({}),
   methods: {
     ...mapActions(["fetchArticles"])
   },
   computed: {
     ...mapGetters(["getArticles"]),
-    viewport() {
-      const div = document.createElement("div");
-
-      div.style.cssText = "position: fixed;top: 0;left: 0;bottom: 0;right: 0;";
-      document.documentElement.insertBefore(
-        div,
-        document.documentElement.firstChild
-      );
-
-      const dims = { width: div.offsetWidth, height: div.offsetHeight };
-      document.documentElement.removeChild(div);
-
-      return dims;
-    }
   }
 };
 </script>

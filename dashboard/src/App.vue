@@ -37,7 +37,7 @@
         <v-icon>mdi-chevron-up</v-icon>
       </v-btn>
 
-      <span>Anti.o &copy; 2020</span>
+      <span>&copy; Anti.o 2020</span>
     </v-footer>
   </v-app>
 </template>
@@ -106,7 +106,7 @@ export default {
   float: left;
   width: 300px;
   border-right: 2px solid #000;
-    height: 100%;
+  height: 100%;
 }
 #map {
   height: 100%;

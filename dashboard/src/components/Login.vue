@@ -80,7 +80,7 @@ export default {
       return null;
     }
   },
-  mounted() {
+  created() {
     this.fetchAreas();
   }
 };
