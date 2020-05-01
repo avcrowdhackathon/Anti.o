@@ -9,18 +9,7 @@
         <feed v-else />
       </div>
       <div id="map">
-        <iframe
-          src="https://lab.imedd.org/covid19/"
-          style="border:0px #ffffff none;"
-          name="imedd-covid"
-          scrolling="no"
-          frameborder="1"
-          marginheight="0px"
-          marginwidth="0px"
-          allowfullscreen
-          width="100%"
-          height="100%"
-        ></iframe>
+        <Map></Map>
       </div>
     </v-content>
     <v-footer app>
@@ -46,13 +35,15 @@ import { mapGetters } from "vuex";
 import Login from "./components/Login.vue";
 import Feed from "./components/Feed.vue";
 import Navbar from "./components/Navbar.vue";
+import Map from "./components/Map.vue";
 
 
 export default {
   components: {
     Login,
     Feed,
-    Navbar
+    Navbar,
+    Map,
   },
   props: {
     source: String
