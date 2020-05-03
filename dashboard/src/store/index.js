@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import httpGetArticles from '../helpers/articles-http';
-import getAreas from '../helpers/areas';
+import httpGetArticles from '../services/articles';
+import getAreas from '../services/areas';
 
 Vue.use(Vuex);
 
