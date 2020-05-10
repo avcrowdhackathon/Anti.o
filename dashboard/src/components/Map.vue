@@ -1,7 +1,6 @@
 <template>
   <div id="map">
-    <div id="map__container"></div>
-    <div id="story-buttons" class="btn-group" role="group" aria-label="questions to be answered">
+    <div class="story-buttons" role="group" aria-label="questions to be answered">
       <button
         id="progress_confirmed"
         type="button"
@@ -11,6 +10,7 @@
       <button id="confirmed" type="button" class="btn" @click="plotMap('confirmed')">Επιβεβαιωμένα</button>
       <button id="deaths" type="button" class="btn" @click="plotMap('deaths')">Θανάτοι</button>
     </div>
+    <div id="map__container"></div>
   </div>
 </template>
 
@@ -47,7 +47,7 @@ export default {
       ZOOM_DURATION,
       ZOOM_IN_STEP,
       ZOOM_OUT_STEP,
-      HOVER_COLOR
+      HOVER_COLOR,
     };
   },
   methods: {
@@ -71,7 +71,7 @@ export default {
         )
         .style("fill", "none")
         .style("pointer-events", "all");
-
+      //handle mobile dimensions
       this.projection = d3
         .geoMercator()
         .center([25.5095, 37.5742])
@@ -258,12 +258,12 @@ export default {
   z-index: 10;
 }
 
-#story-buttons {
-  display: inline-grid;
-  margin-left: 0%;
-  margin-top: -40%;
-  color: black;
-  z-index: 10;
+.story-buttons {
+  padding: 0;
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  transition: opacity .5s;
 }
 #progress_confirmed:hover,
 #confirmed:hover,
