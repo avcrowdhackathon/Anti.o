@@ -53,7 +53,8 @@ export default {
     showPassword: false,
     region: "",
     municipality: "",
-    county: ""
+    county: "",
+    checkbox: false,
   }),
   methods: {
     ...mapActions(["register", "fetchArticles", "fetchAreas"]),
