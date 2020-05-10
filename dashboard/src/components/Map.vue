@@ -82,7 +82,7 @@ export default {
       const data = await d3.csv(
         "https://dimglyn.s3.eu-central-1.amazonaws.com/preprocessed_cases.csv"
       );
-      this.casesData = [...this.casesData, data];
+      this.casesData = [...this.casesData, ...data];
     },
     async fetchGeoJSON() {
       this.geoData = await d3.json(
