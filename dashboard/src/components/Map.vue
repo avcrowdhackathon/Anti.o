@@ -99,8 +99,8 @@ export default {
     zoomHandler() {
       this.g.attr("transform", d3.event.transform);
     },
-    mouseOverHandler(d, i) {
-      d3.select(i).style("fill", this.HOVER_COLOR);
+    mouseOverHandler(d, i, items) {
+      d3.select(items[i]).style("fill", this.HOVER_COLOR);
       d3.select("#tooltip")
         .transition()
         .duration(200)
@@ -170,18 +170,10 @@ export default {
           const jsonState = this.geoData.features[j].properties.name_greek;
           if (dataState == jsonState) {
             //Copy the data value into the JSON
-            this.geoData.features[
-              j
-            ].properties.progress = progressValue_confirmed;
-            this.geoData.features[
-              j
-            ].properties.lastvalue_confirmed = lastValue_confirmed;
-            this.geoData.features[
-              j
-            ].properties.progress_deaths = progressValue_deaths;
-            this.geoData.features[
-              j
-            ].properties.lastvalue_deaths = lastValue_deaths;
+            this.geoData.features[j].properties.progress = progressValue_confirmed;
+            this.geoData.features[j].properties.lastvalue_confirmed = lastValue_confirmed;
+            this.geoData.features[j].properties.progress_deaths = progressValue_deaths;
+            this.geoData.features[j].properties.lastvalue_deaths = lastValue_deaths;
             //console.log(dataState,lastValue_deaths, Math.log(lastValue_deaths+1))
             //Stop looking through the JSON
             break;
@@ -206,7 +198,7 @@ export default {
         .attr("stroke", "#FFF")
         .attr("stroke-width", 1.5)
         .on("mouseover", this.mouseOverHandler)
-        .on("mouseout", (d) => {
+        .on("mouseout", (d, i, items) => {
           let value;
           if (src === "progress_confirmed") {
             value = this.color(Math.log(d.properties.progress + 1));
@@ -215,7 +207,7 @@ export default {
           } else if (src === "confirmed") {
             value = this.color(Math.log(d.properties.lastvalue_confirmed + 1));
           }
-          d3.select(this).style("fill", value);
+          d3.select(items[i]).style("fill", value);
           d3.select("#tooltip").style("opacity", 0);
         })
         .on("mousemove", this.mouseMoveHandler)
