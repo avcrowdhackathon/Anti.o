@@ -126,9 +126,13 @@ export default {
         );
     },
     mouseMoveHandler() {
+      // Workaround
+      // gets coordinates based on map component instead of html.
+      //  56px is the height of navbar
+      // 300 px is the width of sidebar
       return this.tooltip
-        .style("top", d3.event.pageY + "px")
-        .style("left", d3.event.pageX + "px");
+        .style("top", d3.event.pageY - 56 + "px")
+        .style("left", d3.event.pageX - 300+ "px");
     },
     clickHandler(d) {
       d3.select("#map__text").text(`Επιλέξατε ${d.properties.name}`);
