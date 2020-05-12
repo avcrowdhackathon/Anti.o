@@ -1,13 +1,15 @@
 <template>
   <div id="map">
-    <div class="story-buttons" role="group" aria-label="questions to be answered">
+    <div class="story-buttons-container" role="group" aria-label="questions to be answered">
       <button
         id="progress_confirmed"
         type="button"
         class="btn"
         @click="plotMap('progress_confirmed')"
       >Πρόοδος</button>
+      <br>
       <button id="confirmed" type="button" class="btn" @click="plotMap('confirmed')">Επιβεβαιωμένα</button>
+      <br>
       <button id="deaths" type="button" class="btn" @click="plotMap('deaths')">Θανάτοι</button>
     </div>
     <div id="map__container"></div>
@@ -254,13 +256,17 @@ export default {
   z-index: 10;
 }
 
-.story-buttons {
+.story-buttons-container {
   padding: 0;
+  position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
+  z-index: 1;
   background-color: #ffffff;
   transition: opacity .5s;
+  margin: 1%;
 }
+
 #progress_confirmed:hover,
 #confirmed:hover,
 #deaths:hover {
