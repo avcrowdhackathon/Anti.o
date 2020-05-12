@@ -11,6 +11,7 @@
 
 <script>
 import viewPortMixin from '../mixins/viewport';
+
 export default {
   name: "Navbar",
   mixins: [viewPortMixin],

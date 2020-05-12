@@ -5,12 +5,12 @@
         id="progress_confirmed"
         type="button"
         class="btn"
-        @click="plotMap('progress_confirmed')"
+        @click="sourceChange('progress_confirmed')"
       >Πρόοδος</button>
       <br>
-      <button id="confirmed" type="button" class="btn" @click="plotMap('confirmed')">Επιβεβαιωμένα</button>
+      <button id="confirmed" type="button" class="btn" @click="sourceChange('confirmed')">Επιβεβαιωμένα</button>
       <br>
-      <button id="deaths" type="button" class="btn" @click="plotMap('deaths')">Θανάτοι</button>
+      <button id="deaths" type="button" class="btn" @click="sourceChange('deaths')">Θανάτοι</button>
     </div>
     <div id="map__container"></div>
   </div>
@@ -50,6 +50,12 @@ export default {
       ZOOM_IN_STEP,
       ZOOM_OUT_STEP,
       HOVER_COLOR,
+      currentSource: null,
+      dataSources: {
+        'progress_confirmed': 'progress_ten_days_confirmed',
+        'confirmed': 'latest_value_confirmed',
+        'deaths': 'deaths',
+      }
     };
   },
   methods: {
@@ -73,7 +79,7 @@ export default {
         )
         .style("fill", "none")
         .style("pointer-events", "all");
-      //handle mobile dimensions
+      // handle mobile dimensions
       this.projection = d3
         .geoMercator()
         .center([25.5095, 37.5742])
@@ -110,21 +116,21 @@ export default {
       d3.select("#tooltip")
         .style("text-align", "left")
         .html(
-          "<p><h3>" +
-            d.properties.name +
-            "</h3>" +
-            "<h4>επιβεβαιωμένα: " +
-            d.properties.lastvalue_confirmed +
-            "</h4>" +
-            "<h4>τελευταίες 10 μέρες: " +
-            d.properties.progress +
-            "</h4></p>" +
-            "<h4>θάνατοι: " +
-            d.properties.lastvalue_deaths +
-            "</h4>" +
-            "<h4>τελευταίες 10 μέρες: " +
-            d.properties.progress_deaths +
-            "</h4>"
+          `<p><h3>${ 
+            d.properties.name 
+            }</h3>` +
+            `<h4>επιβεβαιωμένα: ${ 
+            d.properties.lastvalue_confirmed 
+            }</h4>` +
+            `<h4>τελευταίες 10 μέρες: ${ 
+            d.properties.progress 
+            }</h4></p>` +
+            `<h4>θάνατοι: ${ 
+            d.properties.lastvalue_deaths 
+            }</h4>` +
+            `<h4>τελευταίες 10 μέρες: ${ 
+            d.properties.progress_deaths 
+            }</h4>`
         );
     },
     mouseMoveHandler() {
@@ -133,19 +139,29 @@ export default {
       //  56px is the height of navbar
       // 300 px is the width of sidebar
       return this.tooltip
-        .style("top", d3.event.pageY - 56 + "px")
-        .style("left", d3.event.pageX - 300+ "px");
+        .style("top", `${d3.event.pageY - 56  }px`)
+        .style("left", `${d3.event.pageX - 300 }px`);
     },
     clickHandler(d) {
       d3.select("#map__text").text(`Επιλέξατε ${d.properties.name}`);
     },
-    plotMap(src) {
-      const dataSource =
-        src === "progress_confirmed"
-          ? "progress_ten_days_confirmed"
-          : src === "confirmed"
-          ? "latest_value_confirmed"
-          : "deaths";
+    sourceChange(src) {
+      this.currentSource = src;
+      this.plotMap(src)
+    },
+    getCurrentSourceColor(d) {
+      let value;
+        if (this.currentSource === "progress_confirmed") {
+          value = this.color(Math.log(d.properties.progress + 1));
+        } else if (this.currentSource === "deaths") {
+          value = this.color(Math.log(d.properties.lastvalue_deaths + 1));
+        } else if (this.currentSource === "confirmed") {
+          value = this.color(Math.log(d.properties.lastvalue_confirmed + 1));
+        }
+      return value;
+    },
+    plotMap() {
+      const dataSource = this.dataSources[this.currentSource];
 
       this.color.domain([
         d3.min(this.casesData, d =>
@@ -155,33 +171,31 @@ export default {
       ]);
 
       for (let i = 0; i < this.casesData.length; i++) {
-        //Grab state name
+        // Grab state name
         const dataState = this.casesData[i].county;
-        //Grab data value, and convert from string to float
-        const progressValue_confirmed = parseFloat(
-          this.casesData[i]["progress_ten_days_confirmed"]
+        // Grab data value, and convert from string to float
+        const progressValueConfirmed = parseFloat(
+          this.casesData[i].progress_ten_days_confirmed
         );
-        const lastValue_confirmed = parseFloat(
-          this.casesData[i]["latest_value_confirmed"]
+        const lastValueConfirmed = parseFloat(
+          this.casesData[i].latest_value_confirmed
         );
-        const progressValue_deaths = parseFloat(
-          this.casesData[i]["progress_ten_days_deaths"]
+        const progressValueDeaths = parseFloat(
+          this.casesData[i].progress_ten_days_deaths
         );
-        const lastValue_deaths = parseFloat(
-          this.casesData[i]["latest_value_deaths"]
+        const lastValueDeaths = parseFloat(
+          this.casesData[i].latest_value_deaths
         );
 
-        //Find the corresponding state inside the GeoJSON
+        // Find the corresponding state inside the GeoJSON
         for (let j = 0; j < this.geoData.features.length; j++) {
           const jsonState = this.geoData.features[j].properties.name_greek;
-          if (dataState == jsonState) {
-            //Copy the data value into the JSON
-            this.geoData.features[j].properties.progress = progressValue_confirmed;
-            this.geoData.features[j].properties.lastvalue_confirmed = lastValue_confirmed;
-            this.geoData.features[j].properties.progress_deaths = progressValue_deaths;
-            this.geoData.features[j].properties.lastvalue_deaths = lastValue_deaths;
-            //console.log(dataState,lastValue_deaths, Math.log(lastValue_deaths+1))
-            //Stop looking through the JSON
+          if (dataState === jsonState) {
+            // Copy the data value into the JSON
+            this.geoData.features[j].properties.progress = progressValueConfirmed;
+            this.geoData.features[j].properties.lastvalue_confirmed = lastValueConfirmed;
+            this.geoData.features[j].properties.progress_deaths = progressValueDeaths;
+            this.geoData.features[j].properties.lastvalue_deaths = lastValueDeaths;
             break;
           }
         }
@@ -194,25 +208,13 @@ export default {
         .enter()
         .append("path")
         .attr("d", this.path)
-        .style("fill", d =>
-          src === "progress_confirmed"
-            ? this.color(Math.log(d.properties.progress + 1))
-            : src === "deaths"
-            ? this.color(Math.log(d.properties.lastvalue_deaths + 1))
-            : this.color(Math.log(d.properties.lastvalue_confirmed + 1))
-        )
+        .style("fill", this.getCurrentSourceColor)
         .attr("stroke", "#FFF")
         .attr("stroke-width", 1.5)
         .on("mouseover", this.mouseOverHandler)
         .on("mouseout", (d, i, items) => {
-          let value;
-          if (src === "progress_confirmed") {
-            value = this.color(Math.log(d.properties.progress + 1));
-          } else if (src === "deaths") {
-            value = this.color(Math.log(d.properties.lastvalue_deaths + 1));
-          } else if (src === "confirmed") {
-            value = this.color(Math.log(d.properties.lastvalue_confirmed + 1));
-          }
+          const value = this.getCurrentSourceColor(d)
+
           d3.select(items[i]).style("fill", value);
           d3.select("#tooltip").style("opacity", 0);
         })
@@ -235,7 +237,7 @@ export default {
       .attr("id", "tooltip")
       .attr("style", "opacity: 0;");
 
-    this.plotMap("progress_confirmed");
+    this.sourceChange("progress_confirmed");
   }
 };
 </script>

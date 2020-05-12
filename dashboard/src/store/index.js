@@ -10,10 +10,10 @@ export default new Vuex.Store({
   state: {
     authenticated: false,
     currentUser: {},
-    users: ["test@test.com"],
+    users: ['test@test.com'],
     areas: {},
     articles: [],
-    userArea: null,
+    userArea: null
   },
   getters: {
     isAuthenticated: (state) => state.authenticated,
@@ -27,22 +27,22 @@ export default new Vuex.Store({
       const user = state.users.find((u) => u === authPayload.email);
       if (user) {
         // user exists, get his locations and render accordingly
-        commit('register', {user: state.users[0], area: authPayload.area})
+        commit('register', { user: state.users[0], area: authPayload.area });
         return;
       }
-      commit('register', {user: state.users[0], area: authPayload.area})
-      return;
-      //register user
+      commit('register', { user: state.users[0], area: authPayload.area });
+      // register user
     },
     fetchArticles: async ({ commit }, areas) => {
       const searchString = areas.length > 0 ? `(${areas.join(' OR ')})` : null;
-      const articles = await (await httpGetArticles(searchString)).data.articles;
-      commit('fetchArticles', articles)
+      const articles = await (await httpGetArticles(searchString)).data
+        .articles;
+      commit('fetchArticles', articles);
     },
     fetchAreas: async ({ commit }) => {
       const areas = getAreas();
       commit('fetchAreas', areas);
-    },
+    }
   },
   mutations: {
     register: (state, { user, area }) => {
@@ -50,8 +50,12 @@ export default new Vuex.Store({
       state.currentUser = user;
       state.userArea = area;
     },
-    fetchArticles: (state, articles) => state.articles = articles,
-    fetchAreas: (state, areas) => state.areas = areas,
+    fetchArticles: (state, articles) => {
+      state.articles = articles;
+    },
+    fetchAreas: (state, areas) => {
+      state.areas = areas;
+    }
   },
-  modules: {},
+  modules: {}
 });

@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import ArticleTile from "./Article.vue";
 import { mapActions, mapGetters } from "vuex";
+import ArticleTile from "./Article.vue";
 import viewPortMixin from '../mixins/viewport'
 
 export default {
