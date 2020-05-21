@@ -52,9 +52,9 @@ export default {
       HOVER_COLOR,
       currentSource: null,
       dataSources: {
-        'progress_confirmed': 'progress_ten_days_confirmed',
-        'confirmed': 'latest_value_confirmed',
-        'deaths': 'deaths',
+        'progress_confirmed': 'county_ten_days_confirmed',
+        'confirmed': 'lateset_value_confirmed',
+        'deaths': 'progress_ten_days_deaths',
       }
     };
   },
@@ -88,7 +88,7 @@ export default {
     },
     async fetchCasesCSV() {
       const data = await d3.csv(
-        "https://dimglyn.s3.eu-central-1.amazonaws.com/preprocessed_cases.csv"
+        "https://tsiordas.herokuapp.com/api/covid19/all"
       );
       this.casesData = [...this.casesData, ...data];
     },
@@ -175,10 +175,10 @@ export default {
         const dataState = this.casesData[i].county;
         // Grab data value, and convert from string to float
         const progressValueConfirmed = parseFloat(
-          this.casesData[i].progress_ten_days_confirmed
+          this.casesData[i].county_ten_days_confirmed
         );
         const lastValueConfirmed = parseFloat(
-          this.casesData[i].latest_value_confirmed
+          this.casesData[i].lateset_value_confirmed
         );
         const progressValueDeaths = parseFloat(
           this.casesData[i].progress_ten_days_deaths
