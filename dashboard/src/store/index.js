@@ -35,9 +35,9 @@ export default new Vuex.Store({
     },
     fetchArticles: async ({ commit }, areas) => {
       const searchString = areas.length > 0 ? `(${areas.join(' OR ')})` : null;
-      const articles = await (await httpGetArticles(searchString)).data
-        .articles;
-      commit('fetchArticles', articles);
+      const data = await httpGetArticles(searchString);
+
+      commit('fetchArticles', data.articles);
     },
     fetchAreas: async ({ commit }) => {
       const areas = getAreas();
