@@ -17,7 +17,8 @@
 </template>
 
 <script>
-import * as d3 from "d3";
+import * as d3 from 'd3';
+import config from '../../config';
 
 export default {
   data() {
@@ -29,7 +30,7 @@ export default {
     const ZOOM_DURATION = 500;
     const ZOOM_IN_STEP = 2;
     const ZOOM_OUT_STEP = 1 / ZOOM_IN_STEP;
-    const HOVER_COLOR = "#C0C0C0";
+    const HOVER_COLOR = '#C0C0C0';
 
     return {
       zoom: null,
@@ -61,24 +62,24 @@ export default {
   methods: {
     init() {
       this.svg = d3
-        .select("#map__container")
-        .append("svg")
-        .attr("width", "100%")
-        .attr("height", "100%");
+        .select('#map__container')
+        .append('svg')
+        .attr('width', '100%')
+        .attr('height', '100%');
 
-      this.g = this.svg.call(this.zoom).append("g");
+      this.g = this.svg.call(this.zoom).append('g');
 
       this.g
-        .append("rect")
-        .attr("width", this.WIDTH * this.OVERLAY_MULTIPLIER)
-        .attr("height", this.HEIGHT * this.OVERLAY_MULTIPLIER)
+        .append('rect')
+        .attr('width', this.WIDTH * this.OVERLAY_MULTIPLIER)
+        .attr('height', this.HEIGHT * this.OVERLAY_MULTIPLIER)
         .attr(
-          "transform",
+          'transform',
           `translate(-${this.WIDTH * this.OVERLAY_OFFSET},-${this.HEIGHT *
             this.OVERLAY_OFFSET})`
         )
-        .style("fill", "none")
-        .style("pointer-events", "all");
+        .style('fill', 'none')
+        .style('pointer-events', 'all');
       // handle mobile dimensions
       this.projection = d3
         .geoMercator()
@@ -87,34 +88,30 @@ export default {
         .translate([this.WIDTH / 2, this.HEIGHT / 2]);
     },
     async fetchCasesCSV() {
-      const data = await d3.csv(
-        "https://tsiordas.herokuapp.com/api/covid19/all"
-      );
+      const data = await d3.csv(config.casesDataUrl);
       this.casesData = [...this.casesData, ...data];
     },
     async fetchGeoJSON() {
-      this.geoData = await d3.json(
-        "https://dimglyn.s3.eu-central-1.amazonaws.com/greece.json"
-      );
+      this.geoData = await d3.json(config.greeceGeoJsonUrl);
     },
     prepareSVG() {
       this.path = d3.geoPath().projection(this.projection);
 
       this.color = d3
         .scaleQuantize()
-        .range(["#1aa260", "#ffce44", "	#FF9900", "#de5246"]);
+        .range(['#1aa260', '#ffce44', '	#FF9900', '#de5246']);
     },
     zoomHandler() {
-      this.g.attr("transform", d3.event.transform);
+      this.g.attr('transform', d3.event.transform);
     },
     mouseOverHandler(d, i, items) {
-      d3.select(items[i]).style("fill", this.HOVER_COLOR);
-      d3.select("#tooltip")
+      d3.select(items[i]).style('fill', this.HOVER_COLOR);
+      d3.select('#tooltip')
         .transition()
         .duration(200)
-        .style("opacity", 1);
-      d3.select("#tooltip")
-        .style("text-align", "left")
+        .style('opacity', 1);
+      d3.select('#tooltip')
+        .style('text-align', 'left')
         .html(
           `<p><h3>${ 
             d.properties.name 
@@ -139,11 +136,11 @@ export default {
       //  56px is the height of navbar
       // 300 px is the width of sidebar
       return this.tooltip
-        .style("top", `${d3.event.pageY - 56  }px`)
-        .style("left", `${d3.event.pageX - 300 }px`);
+        .style('top', `${d3.event.pageY - 56  }px`)
+        .style('left', `${d3.event.pageX - 300 }px`);
     },
     clickHandler(d) {
-      d3.select("#map__text").text(`Επιλέξατε ${d.properties.name}`);
+      d3.select('#map__text').text(`Επιλέξατε ${d.properties.name}`);
     },
     sourceChange(src) {
       this.currentSource = src;
@@ -151,11 +148,11 @@ export default {
     },
     getCurrentSourceColor(d) {
       let value;
-        if (this.currentSource === "progress_confirmed") {
+        if (this.currentSource === 'progress_confirmed') {
           value = this.color(Math.log(d.properties.progress + 1));
-        } else if (this.currentSource === "deaths") {
+        } else if (this.currentSource === 'deaths') {
           value = this.color(Math.log(d.properties.lastvalue_deaths + 1));
-        } else if (this.currentSource === "confirmed") {
+        } else if (this.currentSource === 'confirmed') {
           value = this.color(Math.log(d.properties.lastvalue_confirmed + 1));
         }
       return value;
@@ -202,24 +199,24 @@ export default {
       }
 
       this.g
-        .append("g")
-        .selectAll("path")
+        .append('g')
+        .selectAll('path')
         .data(this.geoData.features)
         .enter()
-        .append("path")
-        .attr("d", this.path)
-        .style("fill", this.getCurrentSourceColor)
-        .attr("stroke", "#FFF")
-        .attr("stroke-width", 1.5)
-        .on("mouseover", this.mouseOverHandler)
-        .on("mouseout", (d, i, items) => {
+        .append('path')
+        .attr('d', this.path)
+        .style('fill', this.getCurrentSourceColor)
+        .attr('stroke', '#FFF')
+        .attr('stroke-width', 1.5)
+        .on('mouseover', this.mouseOverHandler)
+        .on('mouseout', (d, i, items) => {
           const value = this.getCurrentSourceColor(d)
 
-          d3.select(items[i]).style("fill", value);
-          d3.select("#tooltip").style("opacity", 0);
+          d3.select(items[i]).style('fill', value);
+          d3.select('#tooltip').style('opacity', 0);
         })
-        .on("mousemove", this.mouseMoveHandler)
-        .on("click", this.clickHandler);
+        .on('mousemove', this.mouseMoveHandler)
+        .on('click', this.clickHandler);
     }
   },
   async mounted() {
@@ -228,16 +225,16 @@ export default {
     this.zoom = d3
       .zoom()
       .scaleExtent(this.ZOOM_THRESHOLD)
-      .on("zoom", this.zoomHandler);
+      .on('zoom', this.zoomHandler);
     this.init();
     this.prepareSVG();
     this.tooltip = d3
-      .select("#map__container")
-      .append("div")
-      .attr("id", "tooltip")
-      .attr("style", "opacity: 0;");
+      .select('#map__container')
+      .append('div')
+      .attr('id', 'tooltip')
+      .attr('style', 'opacity: 0;');
 
-    this.sourceChange("progress_confirmed");
+    this.sourceChange('progress_confirmed');
   }
 };
 </script>
@@ -313,4 +310,18 @@ export default {
   color: white;
   opacity: 0.1;
 }
+
+/* @media screen and (max-width: 600px) {
+  .story-buttons-container {
+    padding: 0;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background-color: #ffffff;
+    transition: opacity .5s;
+    margin: 1%;
+  }
+} */
+
 </style>

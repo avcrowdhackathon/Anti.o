@@ -1,31 +1,35 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true
-    },
-    "extends": [
-        "plugin:vue/essential",
-        "airbnb-base",
-        "prettier"
-    ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "vue"
-    ],
-    "rules": {
-      "no-plusplus": 0,
-      "no-param-reassign": ["error", {
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "plugin:vue/base",
+    "airbnb-base",
+    "prettier"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "parser": "babel-eslint",
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "vue"
+  ],
+  "rules": {
+    "no-plusplus": 0,
+    "no-param-reassign": [
+      "error",
+      {
         "props": true,
         "ignorePropertyModificationsFor": [
           "state"
         ]
-      }]      
-    }
+      }
+    ]
+  }
 }

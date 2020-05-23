@@ -1,6 +1,6 @@
 import axios from 'axios';
+import config from '../../config';
 
-const articlesBaseUrl = 'http://newsapi.org/v2/everything';
 const queryString = 'κορονοϊός';
 
 const getFromDate = () => {
@@ -17,6 +17,6 @@ export default async (locationQuery) => {
   const query = encodeURI(
     `${queryString}${locationQuery ? `+AND+${locationQuery}` : ''}`
   );
-  const url = `${articlesBaseUrl}?q=${query}&from=${getFromDate()}&sortBy=publishedAt&apiKey=6a1843a983f940459830acc56672cd87`;
+  const url = `${config.newsApiProxyUrl}?q=${query}&from=${getFromDate()}&sortBy=publishedAt&apiKey=6a1843a983f940459830acc56672cd87`;
   return axios.get(url);
 };
