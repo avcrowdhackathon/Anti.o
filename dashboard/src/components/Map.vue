@@ -1,16 +1,25 @@
 <template>
   <div id="map">
-    <div class="story-buttons-container" role="group" aria-label="questions to be answered">
-      <button
-        id="progress_confirmed"
-        type="button"
-        class="btn"
-        @click="sourceChange('progress_confirmed')"
-      >Πρόοδος</button>
-      <br>
-      <button id="confirmed" type="button" class="btn" @click="sourceChange('confirmed')">Επιβεβαιωμένα</button>
-      <br>
-      <button id="deaths" type="button" class="btn" @click="sourceChange('deaths')">Θανάτοι</button>
+    <div class="controls-container" role="group" aria-label="questions to be answered">
+      <div class="story-buttons-container">
+        <button
+          id="progress_confirmed"
+          type="button"
+          class="btn"
+          @click="sourceChange('progress_confirmed')"
+        >Πρόοδος</button>
+        <br>
+        <button id="confirmed" type="button" class="btn" @click="sourceChange('confirmed')">Επιβεβαιωμένα</button>
+        <br>
+        <button id="deaths" type="button" class="btn" @click="sourceChange('deaths')">Θανάτοι</button>
+      </div>
+      <div class="clicked-info">
+        {{clickedInfo}} <br>
+        {{clickedConfirmed}}<br>
+        {{clickedProgress}}<br>
+        {{clickedDeaths}}<br>
+        {{clickedProgressDeaths}}
+      </div>
     </div>
     <div id="map__container"></div>
   </div>
@@ -51,6 +60,7 @@ export default {
       ZOOM_IN_STEP,
       ZOOM_OUT_STEP,
       HOVER_COLOR,
+      clickedRegion: null,
       currentSource: null,
       dataSources: {
         'progress_confirmed': 'county_ten_days_confirmed',
@@ -140,6 +150,7 @@ export default {
         .style('left', `${d3.event.pageX - 300 }px`);
     },
     clickHandler(d) {
+      this.clickedRegion = d;
       d3.select('#map__text').text(`Επιλέξατε ${d.properties.name}`);
     },
     sourceChange(src) {
@@ -219,6 +230,23 @@ export default {
         .on('click', this.clickHandler);
     }
   },
+  computed: {
+    clickedInfo() {
+      return this.clickedRegion ? this.clickedRegion.properties.name : '';
+    },
+    clickedConfirmed() {
+      return this.clickedRegion ? `Επιβεβαιωμένα: ${this.clickedRegion.properties.lastvalue_confirmed}` : '';
+    },
+    clickedProgress() {
+      return this.clickedRegion ? `Τελευταίες 10 μέρες: ${this.clickedRegion.properties.progress}` : '';
+    },
+    clickedDeaths() {
+      return this.clickedRegion ? `Θάνατοι: ${this.clickedRegion.properties.lastvalue_deaths}` : '';
+    },
+    clickedProgressDeaths(){
+      return this.clickedRegion ? `Τελευταίες 10 μέρες: ${this.clickedRegion.properties.progress_deaths}` : '';
+    },
+  },
   async mounted() {
     await this.fetchCasesCSV();
     await this.fetchGeoJSON();
@@ -255,7 +283,7 @@ export default {
   z-index: 10;
 }
 
-.story-buttons-container {
+.controls-container {
   padding: 0;
   position: absolute;
   top: 0;
@@ -311,8 +339,12 @@ export default {
   opacity: 0.1;
 }
 
+.clicked-info {
+  display: none;
+}
+
 @media screen and (max-width: 600px) {
-  .story-buttons-container {
+  .controls-container {
     padding: 0;
     position: relative;
     bottom: 0;
@@ -321,6 +353,15 @@ export default {
     background-color: #ffffff;
     transition: opacity .5s;
     margin: 1%;
+  }
+  .story-buttons-container {
+    float: left;
+  }
+
+  .clicked-info {
+    float: right;
+    padding: 15px;
+    display: block;
   }
 }
 
