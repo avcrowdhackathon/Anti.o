@@ -311,10 +311,10 @@ export default {
   opacity: 0.1;
 }
 
-/* @media screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
   .story-buttons-container {
     padding: 0;
-    position: absolute;
+    position: relative;
     bottom: 0;
     right: 0;
     z-index: 1;
@@ -322,6 +322,6 @@ export default {
     transition: opacity .5s;
     margin: 1%;
   }
-} */
+}
 
 </style>
