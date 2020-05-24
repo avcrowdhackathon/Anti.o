@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "yarn build && aws s3 sync dist s3://beta.antidoto.io && aws cloudfront create-invalidation --distribution-id E1I9R49UJ4LSGW --paths '/*'"
   },
   "dependencies": {
     "axios": "^0.19.2",
