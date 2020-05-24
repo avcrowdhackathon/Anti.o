@@ -1,1 +1,3 @@
 .DS_STORE
+/covid-anti.o-cases-gr/node_modules
+/covid-anti.o-cases-gr/src/api/covid19/tempDocFolder
