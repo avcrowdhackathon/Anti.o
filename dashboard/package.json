@@ -9,7 +9,7 @@
     "deploy": "yarn build && aws s3 sync dist s3://beta.antidoto.io && aws cloudfront create-invalidation --distribution-id E1I9R49UJ4LSGW --paths '/*'"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "d3": "^5.16.0",
     "vue": "^2.6.11",
